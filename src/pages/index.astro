@@ -1,11 +1,21 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { getBlogs } from '../library/microcms'
+const response = await getBlogs({ fields:["id", "title"] })
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブログ</title>
+</head>
+<body>
+  <h2 class="">テストタイトル</h2>
+  <ul>
+    {response.contents.map((content =>
+      <li><a href={content.id}>{content.title}</a></li>
+    ))}
+  </ul>
+</body>
+</html>

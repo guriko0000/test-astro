@@ -1,0 +1,29 @@
+---
+import { getBlogs, getBlogDetail } from '../library/microcms';
+
+export async function getStaticPaths() {
+  const response = await getBlogs({ fields:["id"] });
+  return response.contents.map((content) => ({
+    params: {
+      blogId: content.id
+    }
+  }));
+}
+
+const { blogId } = Astro.params;
+const blog = await getBlogDetail(blogId);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{blog.title}</title>
+</head>
+<body>
+  <h1>{blog.title}</h1>
+  <p class="publishedAt">公開日：{blog.publishedAt.substring(0, 10)}</p>
+  <div class="post-content" set:html={blog.content} />
+</body>
+</html>

@@ -1,7 +1,19 @@
 ---
-import '../../public/assets/css/style.css';
-import Nav from '../components/Nav.astro';
-const { title } = Astro.props;
+export async function getStaticPaths(){
+  const allPosts = await Astro.glob('../blog/*.md');
+  const uniqueTags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
+
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post) => post.frontmatter.tags.includes(tag));
+    return {
+      params: { tag },
+      props: {posts:filteredPosts},
+    }
+  })
+}
+
+const { tag } = Astro.params;
+const filteredPosts = Astro.props.posts;
 ---
 
 <!DOCTYPE html>
@@ -12,7 +24,7 @@ const { title } = Astro.props;
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="format-detection" content="telephone=no">
   <!-- meta情報 -->
-  <title>{title}</title>
+  <title>タグ詳細</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
   <!-- ogp -->
@@ -24,22 +36,24 @@ const { title } = Astro.props;
   <meta property="og:description" content="">
   <!-- ファビコン -->
   <link rel="shortcut icon" type="image/x-icon" href="">
-  <!-- fontawesome -->
-  <!-- <script src="https://kit.fontawesome.com/39d42e1acb.js" crossorigin="anonymous"></script> -->
-  <!-- Googleフォント -->
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&display=swap" rel="stylesheet"> -->
-  <!-- css -->
   <script>console.log("")</script>
 </head>
 
 <body>
-  <Nav/>
+  <header id="header" class="l-header js-header">
+    <p>ヘッダー</p>
 
+  </header>
   <main class="l-main">
-
-  <slot />
-
-</main>
+    <section>
+      <h1 class="">タグ のブログ一覧</h1>
+      <ul>
+        {filteredPosts.map((post) =>
+        <li><a href={post.url}>{post.frontmatter.title}</a></li>
+        )}
+      </ul>
+    </section>
+  </main>
   <!-- footer -->
   <footer class="l-footer">
     <div class="l-inner">

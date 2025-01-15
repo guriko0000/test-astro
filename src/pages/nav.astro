@@ -1,7 +1,20 @@
 ---
-import '../../public/assets/css/style.css';
-import Nav from '../components/Nav.astro';
-const { title } = Astro.props;
+const nav = [
+  {
+    href: '/',
+    label: 'ホーム'
+  },
+  {
+    href: '/company',
+    label: '会社情報'
+  },
+  {
+    href: '/contact',
+    label: 'お問い合わせ'
+  },
+];
+
+const active = '/company';
 ---
 
 <!DOCTYPE html>
@@ -12,7 +25,7 @@ const { title } = Astro.props;
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="format-detection" content="telephone=no">
   <!-- meta情報 -->
-  <title>{title}</title>
+  <title>トップページ</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
   <!-- ogp -->
@@ -24,22 +37,24 @@ const { title } = Astro.props;
   <meta property="og:description" content="">
   <!-- ファビコン -->
   <link rel="shortcut icon" type="image/x-icon" href="">
-  <!-- fontawesome -->
-  <!-- <script src="https://kit.fontawesome.com/39d42e1acb.js" crossorigin="anonymous"></script> -->
-  <!-- Googleフォント -->
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&display=swap" rel="stylesheet"> -->
-  <!-- css -->
   <script>console.log("")</script>
 </head>
 
 <body>
-  <Nav/>
+  <header id="header" class="l-header js-header">
+    <p>ヘッダー</p>
+    <nav>
+      <ul>
+        {nav.map((nav_item) =>
+          <li class:list={[(nav_item.href === active && 'is-active')]}><a href={nav_item.href}>{nav_item.label}</a></li>
+        )}
+      </ul>
+    </nav>
 
+  </header>
   <main class="l-main">
 
-  <slot />
-
-</main>
+  </main>
   <!-- footer -->
   <footer class="l-footer">
     <div class="l-inner">
@@ -52,3 +67,33 @@ const { title } = Astro.props;
 </body>
 
 </html>
+
+
+<style lang="scss">
+  nav {
+    ul {
+      list-style: none;
+      display: flex;
+
+      li {
+        margin-right: 1rem;
+        &.is-active {
+          background-color: #000;
+          
+            a {
+              color: #fff;
+            }
+        }
+
+        a {
+          display: inline-block;
+          text-decoration: none;
+          color: #000;
+          padding: 3px 5px;
+        }
+
+
+      }
+    }
+  }
+</style>

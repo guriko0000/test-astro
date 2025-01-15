@@ -1,7 +1,6 @@
 ---
-import '../../public/assets/css/style.css';
 import Nav from '../components/Nav.astro';
-const { title } = Astro.props;
+const { frontmatter } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -12,7 +11,7 @@ const { title } = Astro.props;
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="format-detection" content="telephone=no">
   <!-- meta情報 -->
-  <title>{title}</title>
+  <title>{frontmatter.title}</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
   <!-- ogp -->
@@ -29,17 +28,15 @@ const { title } = Astro.props;
   <!-- Googleフォント -->
   <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&display=swap" rel="stylesheet"> -->
   <!-- css -->
+  <link rel="stylesheet" href="./assets/js/swiper/bundle.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
   <script>console.log("")</script>
 </head>
-
-<body>
+<body>  
   <Nav/>
-
   <main class="l-main">
-
-  <slot />
-
-</main>
+    <slot />
+  </main>
   <!-- footer -->
   <footer class="l-footer">
     <div class="l-inner">
