@@ -21,7 +21,7 @@ jobs:
       - name: Use Node.js 18
         uses: actions/setup-node@v3 #ワークフロー内でnodejsを使うためのアクション
         with:
-          node-version: '18' #ローカルのnodeのバージョンと合わせなくていいみたい
+          node-version: '22' #ローカルのnodeのバージョンと合わせなくていいみたい
 
 
       - name: Debug Environment
