@@ -22,16 +22,6 @@ jobs:
         uses: actions/setup-node@v3 #ワークフロー内でnodejsを使うためのアクション
         with:
           node-version: '18' #ローカルのnodeのバージョンと合わせなくていいみたい
-
-
-
-      - name: Debug Environment
-        run: |
-          echo "Service Domain: ${MICROCMS_SERVICE_DOMAIN}"
-          echo "API Key: ${MICROCMS_API_KEY}"
-
-
-
           
           
       - name: Build Project
