@@ -15,7 +15,7 @@ const blog = await getBlogDetail(blogId);
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,6 +24,12 @@ const blog = await getBlogDetail(blogId);
 <body>
   <h1>{blog.title}</h1>
   <p class="publishedAt">公開日：{blog.publishedAt.substring(0, 10)}</p>
+  <div class="post-thumb">
+    {blog.thumbnail?.url && (
+      <img src={blog.thumbnail.url} alt="{blog.title}" />
+    )}
+  </div>
   <div class="post-content" set:html={blog.content} />
+
 </body>
 </html>

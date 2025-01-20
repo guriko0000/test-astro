@@ -13,7 +13,7 @@ const response = await getBlogs({ fields:["id", "title", "thumbnail"] })
 <body>
   <h2 class="">テストタイトル</h2>
   <ul>
-    {response.contents.map((content =>
+    {response.contents.map(content => (
       <li><a href={content.id}>
         <div class="c-card-thumb">
         {content.thumbnail?.url && (
