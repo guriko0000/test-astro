@@ -1,7 +1,5 @@
 name: Deploy website on push #ここは何でもOK
 on:
-  push:
-    branches: [main] #対象にするブランチ
   repository_dispatch:
     types: [update] #microCMSのwebhookで設定したトリガーイベント名
 
