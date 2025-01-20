@@ -1,6 +1,6 @@
 ---
 import { getBlogs } from '../library/microcms'
-const response = await getBlogs({ fields:["id", "title"] })
+const response = await getBlogs({ fields:["id", "title", "thumbnail"] })
 ---
 
 <!DOCTYPE html>
@@ -14,7 +14,17 @@ const response = await getBlogs({ fields:["id", "title"] })
   <h2 class="">テストタイトル</h2>
   <ul>
     {response.contents.map((content =>
-      <li><a href={content.id}>{content.title}</a></li>
+      <li><a href={content.id}>
+        <div class="c-card-thumb">
+        <img 
+          src={content.thumbnail?.url} 
+          alt={content.title} 
+          width={150}
+          height={100}
+        />
+        </div>
+        <p class="c-card-title">{content.title}</p>
+        </a></li>
     ))}
   </ul>
 </body>
