@@ -16,12 +16,14 @@ const response = await getBlogs({ fields:["id", "title", "thumbnail"] })
     {response.contents.map((content =>
       <li><a href={content.id}>
         <div class="c-card-thumb">
-        <img 
-          src={content.thumbnail?.url} 
-          alt={content.title} 
-          width={150}
-          height={100}
-        />
+        {content.thumbnail?.url && (
+          <img 
+            src={content.thumbnail.url} 
+            alt={content.title} 
+            width={150} 
+            height={100} 
+          />
+        )}
         </div>
         <p class="c-card-title">{content.title}</p>
         </a></li>
