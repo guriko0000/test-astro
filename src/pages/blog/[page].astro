@@ -1,0 +1,69 @@
+---
+import { getBlogs } from '../../library/microcms';
+
+export async function getStaticPaths() {
+  // 総記事数を取得
+  const { totalCount } = await getBlogs();
+  const perPage = 12; // 1ページに表示する件数
+  const totalPages = Math.ceil(totalCount / perPage); // 総ページ数
+
+  // 動的ルートを生成
+  return Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: (i + 1).toString() }, // ページ番号
+  }));
+}
+
+const { params } = Astro.request;
+const currentPage = parseInt(params.page, 10); // 現在のページ番号
+const perPage = 12; // 1ページに表示する件数
+const offset = (currentPage - 1) * perPage; // 開始位置を計算
+
+// 現在のページの記事を取得
+const response = await getBlogs({
+  limit: perPage,
+  offset,
+});
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ブログ一覧 - ページ {currentPage}</title>
+</head>
+<body>
+  <h1>ブログ一覧 (ページ {currentPage})</h1>
+
+  <ul>
+    {response.contents.map(content => (
+      <li>
+        <a href={`/blog/${content.id}`}>
+          <img 
+            src={content.thumbnail?.url} 
+            alt={content.title} 
+            width="150" 
+            height="100" 
+          />
+          <p>{content.title}</p>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <!-- ページネーションリンク -->
+  <nav>
+    {currentPage > 1 && <a href={`/blog/${currentPage - 1}`}>前のページ</a>}
+    {Array.from({ length: Math.ceil(response.totalCount / perPage) }, (_, i) => (
+      <a 
+        href={`/blog/${i + 1}`} 
+        class={i + 1 === currentPage ? 'active' : ''}
+      >
+        {i + 1}
+      </a>
+    ))}
+    {currentPage < Math.ceil(response.totalCount / perPage) && (
+      <a href={`/blog/${currentPage + 1}`}>次のページ</a>
+    )}
+  </nav>
+</body>
+</html>
