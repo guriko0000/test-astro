@@ -1,69 +1,69 @@
 ---
-import { getBlogs } from '../../library/microcms';
+import { createClient } from 'microcms-js-sdk';
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../../layouts/Layout.astro';
 
-export async function getStaticPaths() {
-  // 総記事数を取得
-  const { totalCount } = await getBlogs();
-  const perPage = 12; // 1ページに表示する件数
+// microCMSクライアントを作成
+const client = createClient({
+  serviceDomain: import.meta.env.MICROCMS_SERVICE_DOMAIN,
+  apiKey: import.meta.env.MICROCMS_API_KEY,
+});
+
+// ページごとのデータ取得設定
+const perPage = 12; // 1ページあたりの記事数
+
+// ページネーション用のパスとデータを生成
+export const getStaticPaths = (async ({ paginate }) => {
+  const response = await client.get({
+    endpoint: 'blogs',
+    queries: { limit: 1 }, // 記事数だけ取得
+  });
+
+  const totalCount = response.totalCount; // 記事総数
   const totalPages = Math.ceil(totalCount / perPage); // 総ページ数
 
-  // 動的ルートを生成
-  return Array.from({ length: totalPages }, (_, i) => ({
-    params: { page: (i + 1).toString() }, // ページ番号
-  }));
-}
+  const paths = [];
+  for (let i = 0; i < totalPages; i++) {
+    const pageData = await client.get({
+      endpoint: 'blogs',
+      queries: {
+        limit: perPage,
+        offset: i * perPage,
+      },
+    });
+    paths.push(
+      ...paginate(pageData.contents, {
+        pageSize: perPage,
+        currentPage: i + 1,
+      })
+    );
+  }
 
-const { params } = Astro.request;
-const currentPage = parseInt(params.page, 10); // 現在のページ番号
-const perPage = 12; // 1ページに表示する件数
-const offset = (currentPage - 1) * perPage; // 開始位置を計算
+  return paths;
+}) satisfies GetStaticPaths;
 
-// 現在のページの記事を取得
-const response = await getBlogs({
-  limit: perPage,
-  offset,
-});
+// Astro.propsからページデータを取得
+const { page } = Astro.props;
 ---
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>ブログ一覧 - ページ {currentPage}</title>
-</head>
-<body>
-  <h1>ブログ一覧 (ページ {currentPage})</h1>
-
-  <ul>
-    {response.contents.map(content => (
-      <li>
-        <a href={`/blog/${content.id}`}>
-          <img 
-            src={content.thumbnail?.url} 
-            alt={content.title} 
-            width="150" 
-            height="100" 
-          />
-          <p>{content.title}</p>
-        </a>
-      </li>
-    ))}
-  </ul>
-
-  <!-- ページネーションリンク -->
-  <nav>
-    {currentPage > 1 && <a href={`/blog/${currentPage - 1}`}>前のページ</a>}
-    {Array.from({ length: Math.ceil(response.totalCount / perPage) }, (_, i) => (
-      <a 
-        href={`/blog/${i + 1}`} 
-        class={i + 1 === currentPage ? 'active' : ''}
-      >
-        {i + 1}
-      </a>
-    ))}
-    {currentPage < Math.ceil(response.totalCount / perPage) && (
-      <a href={`/blog/${currentPage + 1}`}>次のページ</a>
-    )}
-  </nav>
-</body>
-</html>
+<Layout>
+  <div>
+    <h1>記事一覧</h1>
+    <ul>
+      {page.data.map((post) => (
+        <li key={post.id}>
+          <article>
+            <h2>
+              <a href={`/blog/posts/${post.id}`}>{post.title}</a>
+            </h2>
+          </article>
+        </li>
+      ))}
+    </ul>
+    <nav>
+      {page.url.prev && <a href={page.url.prev}>戻る</a>}
+      {page.url.prev && page.url.next && <span class="mx-4">|</span>}
+      {page.url.next && <a href={page.url.next}>進む</a>}
+    </nav>
+  </div>
+</Layout>
