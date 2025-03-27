@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getBlogs } from '../../library/microcms';
 
 export async function getStaticPaths() {
-  const limit = 5;
+  const limit = 5; //一覧表示数
   const response = await getBlogs();
   const totalPages = Math.ceil(response.totalCount / limit);
   return Array.from({ length: totalPages }, (_, i) => ({
@@ -23,6 +23,17 @@ const response = await getBlogs({
 });
 
 const totalPages = Math.ceil(response.totalCount / limit);
+
+
+const range = 3; // ページネーション前後数
+
+const centerPages = Array.from({ length: totalPages }, (_, i) => i + 1)
+  .filter(page =>
+    page > 1 &&
+    page < totalPages &&
+    page >= currentPage - range &&
+    page <= currentPage + range
+  );
 ---
 
 <Layout>
@@ -49,19 +60,56 @@ const totalPages = Math.ceil(response.totalCount / limit);
     ))}
   </ul>
 
-  <nav class="pagination">
+  <div class="p-post__pagination">
+  <nav class="c-pagination">
     <ul>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+      {currentPage > 1 && (
+        <li class="prev"><a href={`/page/${currentPage - 1}`} aria-label="前のページ"></a></li>
+      )}
+  
+     {/* 最初のページ */}
+      <li>
+        {currentPage === 1 ? (
+          <span class="current">1</span>
+        ) : (
+          <a href="/page/1">1</a>
+        )}
+      </li>
+  
+      {currentPage > 1 + range + 1 && <li><span>…</span></li>}
+  
+      {/* 中央ページ（±range） */}
+      {centerPages.map(page => (
         <li>
           {page === currentPage ? (
-            <span>{page}</span>
+            <span class="current">{page}</span>
           ) : (
             <a href={`/page/${page}`}>{page}</a>
           )}
         </li>
       ))}
+  
+      {currentPage < totalPages - range - 1 && <li><span>…</span></li>}
+  
+      {/* 最後のページ */}
+      {totalPages > 1 && (
+        <li>
+          {currentPage === totalPages ? (
+            <span class="current">{totalPages}</span>
+          ) : (
+            <a href={`/page/${totalPages}`}>{totalPages}</a>
+          )}
+        </li>
+      )}
+  
+      {currentPage < totalPages && (
+        <li class="next"><a href={`/page/${currentPage + 1}`} aria-label="次のページ"></a></li>
+      )}
     </ul>
   </nav>
+</div>
+  
+  
       
 </div>
 </section>

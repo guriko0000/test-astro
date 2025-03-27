@@ -1,14 +1,17 @@
 {
-    "liveSassCompile.settings.formats": [
+  "liveSassCompile.settings.formats": [
     {
       "format": "expanded",
       "extensionName": ".css",
-      "savePath": "public/assets/css/"
+      "savePath": "/public/assets/css/"
     },
     {
       "format": "compressed",
       "extensionName": ".min.css",
-      "savePath": "public/assets/css/"
+      "savePath": "/public/assets/css/"
     }
+  ],
+  "liveSassCompile.settings.includeItems": [
+    "/public/assets/scss/**/*.scss"
   ],
 }

@@ -4,14 +4,15 @@
         c-secondary-title
 -----------------------------------------*/
 .c-secondary-title {
-  background: linear-gradient(to right, $second-color, $main-color);
-  border-radius: 6px;
+  // background: linear-gradient(to right, $second-color, $main-color);
+  border-radius: 10px;
   color: #fff;
   font-size: 2.8rem;
   line-height: 1.4;
   font-weight: $medium;
   padding: 10px 20px;
   max-width: 500px;
+  width: 100%;
 
   @include mq(md) {
     font-size: 1.8rem;

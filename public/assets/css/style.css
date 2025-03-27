@@ -1512,12 +1512,6 @@ body {
 /* -------------------------------------
         c-pagination
 -----------------------------------------*/
-.c-pagination {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  margin: 0 20px;
-}
 .c-pagination ul {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1528,19 +1522,8 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  position: relative;
-  padding: 0 10px;
 }
-.c-pagination li a {
-  -webkit-transition: 0.25s;
-  transition: 0.25s;
-}
-.c-pagination li a:hover, .c-pagination li a:focus-visible {
-  opacity: 0.7;
-}
-.c-pagination li .page-numbers {
+.c-pagination li a, .c-pagination li span {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1552,88 +1535,71 @@ body {
           justify-content: center;
   width: 40px;
   height: 40px;
-  border: 1px solid #92846F;
-  background-color: #92846F;
-  border-radius: 4px;
-  font-family: "Roboto", sans-serif;
-  color: #fff;
-  line-height: 1;
-  margin: 3px;
-}
-@media screen and (max-width: 767px) {
-  .c-pagination li .page-numbers {
-    width: 36px;
-    height: 36px;
-    margin: 3px;
-  }
-}
-.c-pagination li .current {
-  background-color: #4DC1A0;
   border: 1px solid #4DC1A0;
+  background-color: #fff;
+  border-radius: 4px;
+  color: #4DC1A0;
+  font-size: 1.4rem;
+  margin: 0 3px;
+}
+@media screen and (max-width: 767px) {
+  .c-pagination li a, .c-pagination li span {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    margin: 0 5px;
+  }
+}
+.c-pagination .current {
+  background-color: #4DC1A0;
   color: #fff;
 }
-.c-pagination li .prev, .c-pagination li .next {
+.c-pagination .prev a, .c-pagination .next a {
   border: none;
-  background-color: transparent;
-  margin: 0;
-}
-.c-pagination li .prev {
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  left: -32px;
+  width: 20px;
 }
 @media screen and (max-width: 767px) {
-  .c-pagination li .prev {
-    left: -24px;
+  .c-pagination .prev a, .c-pagination .next a {
+    width: 10px;
   }
 }
-.c-pagination li .next {
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  right: -36px;
+.c-pagination .prev a {
+  -webkit-transform: translateX(-8px);
+          transform: translateX(-8px);
 }
-@media screen and (max-width: 767px) {
-  .c-pagination li .next {
-    right: -30px;
-  }
-}
-.c-pagination li .prev::before {
+.c-pagination .prev a::before {
   content: "";
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  background-image: url(../images/icon/icon_arrow-left-blk.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
+  width: 12px;
+  height: 16px;
+  background: transparent url(../img/icon/icon_arrow-left.svg) no-repeat center center/contain;
+  margin-right: 3px;
 }
-.c-pagination li .next::after {
+.c-pagination .next a {
+  -webkit-transform: translateX(10px);
+          transform: translateX(10px);
+}
+.c-pagination .next a::after {
   content: "";
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  background-image: url(../images/icon/icon_arrow-right-blk02.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  margin-left: 8px;
+  width: 12px;
+  height: 16px;
+  background: transparent url(../img/icon/icon_arrow-right.svg) no-repeat center center/contain;
+  margin-left: 3px;
 }
 
 /* -------------------------------------
         c-secondary-title
 -----------------------------------------*/
 .c-secondary-title {
-  background: -webkit-gradient(linear, left top, right top, from(#38BADC), to(#4DC1A0));
-  background: linear-gradient(to right, #38BADC, #4DC1A0);
-  border-radius: 6px;
+  border-radius: 10px;
   color: #fff;
   font-size: 2.8rem;
   line-height: 1.4;
   font-weight: 500;
   padding: 10px 20px;
   max-width: 500px;
+  width: 100%;
 }
 @media screen and (max-width: 767px) {
   .c-secondary-title {
@@ -2113,6 +2079,18 @@ body {
 @media screen and (max-width: 330px) {
   .p-mv__info-item:not(:first-child) {
     margin-left: 5px;
+  }
+}
+
+/* -------------------------------------
+        p-post
+-----------------------------------------*/
+.p-post__pagination {
+  margin-top: 80px;
+}
+@media screen and (max-width: 767px) {
+  .p-post__pagination {
+    margin-top: 50px;
   }
 }
 
