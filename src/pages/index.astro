@@ -1,6 +1,10 @@
 ---
 import { getBlogs } from '../library/microcms'
-const response = await getBlogs({ fields:["id", "title", "thumbnail"] })
+// const response = await getBlogs({ fields:["id", "title", "thumbnail"] })
+const response = await getBlogs({
+  fields: ["id", "title", "thumbnail"],
+  limit: 5
+});
 ---
 
 <!DOCTYPE html>

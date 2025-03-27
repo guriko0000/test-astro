@@ -1,0 +1,68 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getBlogs } from '../../library/microcms';
+
+export async function getStaticPaths() {
+  const limit = 5;
+  const response = await getBlogs();
+  const totalPages = Math.ceil(response.totalCount / limit);
+  return Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: String(i + 1) },
+  }));
+}
+
+const { params } = Astro;
+const currentPage = Number(params.page);
+const limit = 5;
+const offset = (currentPage - 1) * limit;
+
+const response = await getBlogs({
+  limit,
+  offset,
+  fields: ["id", "title", "thumbnail"],
+});
+
+const totalPages = Math.ceil(response.totalCount / limit);
+---
+
+<Layout>
+<section class="">
+  <div class="l-inner">
+
+  <h2>記事一覧（{currentPage}ページ目）</h2>
+
+  <ul class="l-grid l-grid--col3">
+    {response.contents.map(content => (
+      <li class="c-card l-grid__item"><a href={`/${content.id}`}>
+        <div class="c-card__img">
+        {content.thumbnail?.url && (
+          <img 
+            src={content.thumbnail.url} 
+            alt={content.title} 
+            width={150} 
+            height={100} 
+          />
+        )}
+        </div>
+        <p class="c-card-title">{content.title}</p>
+      </a></li>
+    ))}
+  </ul>
+
+  <nav class="pagination">
+    <ul>
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+        <li>
+          {page === currentPage ? (
+            <span>{page}</span>
+          ) : (
+            <a href={`/page/${page}`}>{page}</a>
+          )}
+        </li>
+      ))}
+    </ul>
+  </nav>
+      
+</div>
+</section>
+</Layout>
