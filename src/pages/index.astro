@@ -2,7 +2,6 @@
 import { getBlogs } from '../library/microcms'
 // const response = await getBlogs({ fields:["id", "title", "thumbnail"] })
 const response = await getBlogs({
-  fields: ["id", "title", "thumbnail"],
   limit: 5
 });
 ---
@@ -19,7 +18,7 @@ const response = await getBlogs({
   <ul>
     {response.contents.map(content => (
       <li><a href={content.id}>
-        <div class="c-card-thumb">
+        <div class="c-card__img">
         {content.thumbnail?.url && (
           <img 
             src={content.thumbnail.url} 
@@ -29,9 +28,18 @@ const response = await getBlogs({
           />
         )}
         </div>
-        <p class="c-card-title">{content.title}</p>
+        <p class="c-card__title">{content.title}</p>
+        {content.category && content.category.length > 0 && (
+          <ul class="c-card__cate-wrap">
+            {content.category.map((cat) => (
+              <li class="c-card__">{cat["cate-name"]}</li>
+            ))}
+          </ul>
+        )}
+
         </a></li>
     ))}
+
   </ul>
 </body>
 </html>

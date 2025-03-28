@@ -19,7 +19,6 @@ const offset = (currentPage - 1) * limit;
 const response = await getBlogs({
   limit,
   offset,
-  fields: ["id", "title", "thumbnail"],
 });
 
 const totalPages = Math.ceil(response.totalCount / limit);
@@ -55,8 +54,16 @@ const centerPages = Array.from({ length: totalPages }, (_, i) => i + 1)
           />
         )}
         </div>
-        <p class="c-card-title">{content.title}</p>
-      </a></li>
+        <p class="c-card__title">{content.title}</p>
+        {content.category && content.category.length > 0 && (
+          <ul class="c-card__cate-wrap">
+            {content.category.map((cat) => (
+              <li class="c-card__">{cat["cate-name"]}</li>
+            ))}
+          </ul>
+        )}
+      </a>
+      </li>
     ))}
   </ul>
 

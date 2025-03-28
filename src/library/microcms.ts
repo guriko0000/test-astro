@@ -6,6 +6,11 @@ const client = createClient({
 });
 
 //型定義
+export type Category = {
+  id: string;
+  name: string;
+};
+
 export type Blog = {
   id: string;
   createdAt: string;
@@ -14,6 +19,7 @@ export type Blog = {
   revisedAt: string;
   title: string;
   content: string;
+  category: Category[];
 };
 export type BlogResponse = {
   totalCount: number;
@@ -24,12 +30,22 @@ export type BlogResponse = {
 
 //APIの呼び出し
 export const getBlogs = async (queries?: any) => {
-  return await client.get<BlogResponse>({ endpoint: "blogs", queries });
+  return await client.get<BlogResponse>({ 
+    endpoint: "blogs", 
+    queries: {
+      depth: 2,
+      ...queries,
+    }, 
+  });
 };
-export const getBlogDetail = async (contentId: string, queries?: any) => {
+
+export const getBlogDetail = async (blogId: string, queries?: any) => {
   return await client.getListDetail<Blog>({
     endpoint: "blogs",
-    contentId,
-    queries,
+    contentId: blogId,
+    queries: {
+      depth: 2,
+      ...queries,
+    },
   });
 };
