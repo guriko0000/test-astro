@@ -132,7 +132,7 @@ const centerPages = Array.from({ length: totalPages }, (_, i) => i + 1)
   <ul>
     {categoryList.contents.map((cat) => (
       <li>
-        <a href={`/category/${cat.id}`}>{cat["cate-name"]}</a>
+        <a href={`/blog/category/${cat.id}`}>{cat["cate-name"]}</a>
       </li>
     ))}
   </ul>

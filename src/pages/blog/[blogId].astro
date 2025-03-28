@@ -23,6 +23,16 @@ export async function getStaticPaths() {
 const { blogId } = Astro.params;
 const blog = await getBlogDetail(blogId);
 const categoryList = await getCategories();
+
+const allBlogs = await getBlogs({
+  fields: ['id', 'title', 'publishedAt'],
+  orders: '-publishedAt',
+});
+
+const currentIndex = allBlogs.contents.findIndex((item) => item.id === blogId);
+const nextBlog = allBlogs.contents[currentIndex + 1];
+const prevBlog = allBlogs.contents[currentIndex - 1];
+
 ---
 
 <!DOCTYPE html>
@@ -49,8 +59,25 @@ const categoryList = await getCategories();
       <img src={blog.thumbnail.url} alt="{blog.title}" />
     )}
   </div>
-  <div class="post-content" set:html={blog.content} />
-</div>
+  <div class="post-content" set:html={blog.content} /></div>
+
+  <nav class="post-nav">
+    <ul>
+      {prevBlog && (
+        <li class="prev">
+          {/* <a href={`/blog/${prevBlog.id}`}>← 前の記事：{prevBlog.title}</a> */}
+          <a href={`/blog/${prevBlog.id}`}>← 前の記事へ</a>
+        </li>
+      )}
+      {nextBlog && (
+        <li class="next">
+          {/* <a href={`/blog/${nextBlog.id}`}>次の記事：{nextBlog.title} →</a> */}
+          <a href={`/blog/${nextBlog.id}`}>次の記事へ →</a>
+        </li>
+      )}
+    </ul>
+  </nav>
+  
 
 
 
