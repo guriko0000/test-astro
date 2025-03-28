@@ -8,7 +8,7 @@ const client = createClient({
 //型定義
 export type Category = {
   id: string;
-  name: string;
+  'cate-name': string;
 };
 
 export type Blog = {
@@ -47,5 +47,11 @@ export const getBlogDetail = async (blogId: string, queries?: any) => {
       depth: 2,
       ...queries,
     },
+  });
+};
+
+export const getCategories = async () => {
+  return await client.getList<Category>({
+    endpoint: "category",
   });
 };
