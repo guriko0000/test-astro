@@ -1,4 +1,5 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import { getBlogs } from '../library/microcms'
 // const response = await getBlogs({ fields:["id", "title", "thumbnail"] })
 const response = await getBlogs({
@@ -6,18 +7,13 @@ const response = await getBlogs({
 });
 ---
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ブログ</title>
-</head>
-<body>
+<Layout>
+  <section class="">
+    <div class="l-inner">
   <h2 class="">テストタイトル</h2>
-  <ul>
+  <ul class="l-grid l-grid--col3">
     {response.contents.map(content => (
-      <li><a href={content.id}>
+      <li class="c-card l-grid__item"><a href={`/blog/${content.id}`}>
         <div class="c-card__img">
         {content.thumbnail?.url && (
           <img 
@@ -32,7 +28,7 @@ const response = await getBlogs({
         {content.category && content.category.length > 0 && (
           <ul class="c-card__cate-wrap">
             {content.category.map((cat) => (
-              <li class="c-card__">{cat["cate-name"]}</li>
+              <li class="c-card__cate">{cat["cate-name"]}</li>
             ))}
           </ul>
         )}
@@ -42,6 +38,7 @@ const response = await getBlogs({
 
   </ul>
 
-  <a href="/blog/page/1">一覧へ</a>
-</body>
-</html>
+  <a href="/blog/page/1" class="c-btn" style="margin-top: 40px;">一覧へ</a>
+</div>
+</section>
+</Layout>

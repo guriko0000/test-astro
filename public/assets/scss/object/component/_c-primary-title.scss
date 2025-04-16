@@ -5,9 +5,15 @@
 -----------------------------------------*/
 .c-primary-title {
   position: relative;
+  font-size: 3rem;
+  font-weight: $bold;
   line-height: 1.4;
-  text-align: center;
   z-index: 10;
+  margin-top: 30px;
+
+  & + * {
+    margin-top: 10px;
+  }
 
   &__main {
     display: flex;
