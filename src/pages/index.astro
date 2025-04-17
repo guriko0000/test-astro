@@ -10,7 +10,7 @@ const response = await getBlogs({
 <Layout>
   <section class="">
     <div class="l-inner">
-  <h2 class="">テスタイトル</h2>
+  <h2 class="">テストTOPタイトル</h2>
   <ul class="l-grid l-grid--col3">
     {response.contents.map(content => (
       <li class="c-card l-grid__item"><a href={`/blog/${content.id}`}>
