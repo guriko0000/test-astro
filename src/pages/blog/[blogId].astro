@@ -65,14 +65,14 @@ const prevBlog = allBlogs.contents[currentIndex - 1];
     <ul>
       {prevBlog && (
         <li class="prev">
-          {/* <a href={`/blog/${prevBlog.id}`}>← 前の記事：{prevBlog.title}</a> */}
-          <a href={`/blog/${prevBlog.id}`}>← 前の記事へ</a>
+          {/* <a href={`/blog/${prevBlog.id}`}>← 次の記事：{prevBlog.title}</a> */}
+          <a href={`/blog/${prevBlog.id}`}>← 次の記事へ</a>
         </li>
       )}
       {nextBlog && (
         <li class="next">
-          {/* <a href={`/blog/${nextBlog.id}`}>次の記事：{nextBlog.title} →</a> */}
-          <a href={`/blog/${nextBlog.id}`}>次の記事へ →</a>
+          {/* <a href={`/blog/${nextBlog.id}`}>前の記事：{nextBlog.title} →</a> */}
+          <a href={`/blog/${nextBlog.id}`}>前の記事へ →</a>
         </li>
       )}
     </ul>
