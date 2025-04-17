@@ -1,10 +1,10 @@
 ---
-import { getCategories, getBlogDetail, getBlogs, } from '../../library/microcms';
+import { getCategories, getBlogDetail, getBlogs } from '../../library/microcms';
 
 export async function getStaticPaths() {
   const limit = 100;
   let offset = 0;
-  let allContents = [];
+  let allContents: { id: string }[] = [];
   let hasMore = true;
 
   while (hasMore) {
@@ -18,22 +18,32 @@ export async function getStaticPaths() {
     params: { blogId: content.id },
   }));
 }
-
-
 const { blogId } = Astro.params;
 const blog = await getBlogDetail(blogId);
 const categoryList = await getCategories();
 
-const allBlogs = await getBlogs({
-  fields: ['id', 'title', 'publishedAt'],
-  orders: '-publishedAt',
-});
+let allBlogs: { id: string; title: string; publishedAt: string }[] = [];
+let offset = 0;
+const limit = 100;
+let hasMore = true;
 
-const currentIndex = allBlogs.contents.findIndex((item) => item.id === blogId);
-const nextBlog = allBlogs.contents[currentIndex + 1];
-const prevBlog = allBlogs.contents[currentIndex - 1];
+while (hasMore) {
+  const res = await getBlogs({
+    offset,
+    limit,
+    fields: ['id', 'title', 'publishedAt'],
+    orders: '-publishedAt',
+  });
+  allBlogs = allBlogs.concat(res.contents);
+  offset += limit;
+  hasMore = res.contents.length === limit;
+}
 
+const currentIndex = allBlogs.findIndex((item) => item.id === blogId);
+const nextBlog = allBlogs[currentIndex + 1];
+const prevBlog = allBlogs[currentIndex - 1];
 ---
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -75,6 +85,7 @@ const prevBlog = allBlogs.contents[currentIndex - 1];
           <a href={`/blog/${nextBlog.id}`}>前の記事へ →</a>
         </li>
       )}
+
     </ul>
   </nav>
   
